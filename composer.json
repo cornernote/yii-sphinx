@@ -1,0 +1,26 @@
+{
+    "name": "cornernote/yii-sphinx",
+    "description": "Yii extension for Sphinx Search.",
+    "type": "library",
+    "license": "BSD-3-Clause",
+    "keywords": ["yii", "sphinx", "sphinxsearch", "search", "mrphp"],
+    "authors": [
+        {
+            "name": "Brett O'Donnell",
+            "email": "cornernote@gmail.com",
+            "homepage": "http://mrphp.com.au/"
+        },
+        {
+            "name": "Zain ul abidin",
+            "email": "zainengineer@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "yiisoft/yii": "1.1.14"
+    },
+    "autoload": {
+        "classmap": [
+            "sphinx/components/",
+        ]
+    }
+}
