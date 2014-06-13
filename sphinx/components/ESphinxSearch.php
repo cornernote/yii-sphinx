@@ -34,13 +34,11 @@
  *
  * Search by criteria Object:
  *
- *     $searchCriteria = new stdClass();
- *     $pages = new CPagination();
- *     $pages->pageSize = Yii::app()->params['firmPerPage'];
+ *     $searchCriteria = new ESphinxCriteria();
  *     $searchCriteria->select = 'project_id';
  *     $searchCriteria->filters = array('project_id' => $project_id);
  *     $searchCriteria->query = '@name '.$query.'*';
- *     $searchCriteria->paginator = $pages;
+ *     $searchCriteria->paginator->pageSize = Yii::app()->params['firmPerPage'];
  *     $searchCriteria->groupby = $groupby;
  *     $searchCriteria->orders = array('f_name' => 'ASC');
  *     $searchCriteria->from = 'firm';
@@ -128,12 +126,12 @@ class ESphinxSearch extends CApplicationComponent
      */
     public $enableResultTrace = false;
     /**
-     * @var stdClass
+     * @var ESphinxCriteria
      * @brief current search criteria
      */
     protected $criteria;
     /**
-     * @var stdClass
+     * @var ESphinxCriteria
      * @var last used criteria
      */
     protected $lastCriteria;
@@ -173,7 +171,7 @@ class ESphinxSearch extends CApplicationComponent
     /**
      * @brief full text search system query
      * @details send query to full text search system
-     * @param object criteria
+     * @param ESphinxCriteria criteria
      * @return ESphinxSearchResult
      */
     public function search($criteria = null)
@@ -330,9 +328,9 @@ class ESphinxSearch extends CApplicationComponent
             $this->lastCriteria = clone($this->criteria);
         }
         else {
-            $this->lastCriteria = new stdClass();
+            $this->lastCriteria = new ESphinxCriteria();
         }
-        $this->criteria = new stdClass();
+        $this->criteria = new ESphinxCriteria();
         $this->criteria->query = '';
         $this->client->resetFilters();
         $this->client->resetGroupBy();
@@ -348,7 +346,7 @@ class ESphinxSearch extends CApplicationComponent
 
     /**
      * @brief handle given search criteria. set them to current object
-     * @param object $criteria
+     * @param ESphinxCriteria $criteria
      */
     public function setCriteria($criteria)
     {
@@ -384,10 +382,13 @@ class ESphinxSearch extends CApplicationComponent
         if (isset($criteria->filters)) {
             $this->filters($criteria->filters);
         }
-
         // set field ordering
         if (isset($criteria->orders) && $criteria->orders) {
             $this->orderby($criteria->orders);
+        }
+        // set fieldWeights
+        if (isset($criteria->fieldWeights)) {
+            $this->fieldWeights = $criteria->fieldWeights;
         }
     }
 
@@ -499,7 +500,7 @@ class ESphinxSearch extends CApplicationComponent
     /**
      * @brief init ESphinxSearchResult interator for search results
      * @param array $data
-     * @param stdObject $criteria
+     * @param ESphinxCriteria $criteria
      * @return ESphinxSearchResult
      */
     protected function initIterator(array $data, $criteria = NULL)
