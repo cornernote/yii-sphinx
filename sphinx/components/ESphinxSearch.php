@@ -299,7 +299,7 @@ class ESphinxSearch extends CApplicationComponent
     public function limit($offset = null, $limit = null)
     {
         $this->criteria->paginator->setCurrentPage($offset ? ($offset / $limit) : 0);
-        $this->criteria->paginator->limit = $limit;
+        $this->criteria->paginator->pageSize = $limit;
         if (isset($offset) && isset($limit)) {
             $this->client->setLimits($offset, $limit);
         }
