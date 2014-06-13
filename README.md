@@ -96,6 +96,16 @@ $resIterator = $search->select('field_1, field_2')->search($searchCriteria);
 ```
 
 
+Finding Models:
+
+```php
+$ids = array_keys($resArray['matches']);
+$criteria = new CDbCriteria;
+$criteria->addInCondition('id', $ids);
+$criteria->order = 'FIELD(t.id, ' . implode(', ', $ids) . ')'; // order by weight
+$products = Product::model()->findAll($criteria);
+```
+
 Real-Time Index via ActiveRecord:
 
 ```php
