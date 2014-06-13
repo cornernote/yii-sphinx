@@ -20,7 +20,7 @@
     },
     "autoload": {
         "classmap": [
-            "sphinx/components/",
+            "sphinx/components/"
         ]
     }
 }
