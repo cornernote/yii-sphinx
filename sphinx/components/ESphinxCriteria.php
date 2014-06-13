@@ -47,6 +47,14 @@ class ESphinxCriteria extends CComponent
     /**
      * @var array
      */
+    public $limit = array(
+        'offset' => 0,
+        'limit' => 0,
+    );
+
+    /**
+     * @var array
+     */
     public $fieldWeights = array();
 
     /**
