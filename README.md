@@ -43,7 +43,7 @@ $searchCriteria->select = 'id';
 $searchCriteria->filters = array('status' => 1);
 $searchCriteria->query = 'keywords';
 $searchCriteria->from = 'product';
-$searchCriteria->groupby = 'price';
+$searchCriteria->groupby = 'id';
 $searchCriteria->orders = array('name' => 'ASC');
 $searchCriteria->paginator->pageSize = 1000;
 $searchCriteria->fieldWeights = array(
@@ -155,7 +155,6 @@ class ProductIndex extends ESphinxActiveRecord
         $productIndex->id = $product->id;
         $productIndex->name = $product->name;
         $productIndex->description = $product->description;
-        $productIndex->quantity = $product->quantity;
         $productIndex->status = $product->status;
         $productIndex->save(false);
     }
