@@ -21,7 +21,7 @@ class ESphinxSchema extends CMysqlSchema
      */
     protected function createCommandBuilder()
     {
-        return new SphinxCommandBuilder($this);
+        return new ESphinxCommandBuilder($this);
     }
 
     /**

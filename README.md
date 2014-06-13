@@ -6,6 +6,9 @@ Yii extension for Sphinx Search
 
 ```
 return array(
+    'aliases' => array(
+        'sphinx' => realpath(VENDOR_PATH . '/cornernote/yii-sphinx/sphinx'),
+    ),
     'components' => array(
        'dbSphinx' => array(
             'class' => 'vendor.cornernote.yii-sphinx.sphinx.components.ESphinxDbConnection',

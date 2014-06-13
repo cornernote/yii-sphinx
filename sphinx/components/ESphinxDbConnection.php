@@ -19,8 +19,8 @@ class ESphinxDbConnection extends CDbConnection
      * A schema class can be specified using path alias.
      */
     public $driverMap = array(
-        'mysqli' => 'ESphinxSchema',
-        'mysql' => 'ESphinxSchema',
+        'mysqli' => 'sphinx.components.ESphinxSchema',
+        'mysql' => 'sphinx.components.ESphinxSchema',
     );
 
 }
