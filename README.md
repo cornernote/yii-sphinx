@@ -106,6 +106,7 @@ $criteria->order = 'FIELD(t.id, ' . implode(', ', $ids) . ')'; // order by weigh
 $products = Product::model()->findAll($criteria);
 ```
 
+
 Real-Time Index via ActiveRecord:
 
 ```php
