@@ -99,6 +99,27 @@ $resIterator = $search->select('field_1, field_2')->search($searchCriteria);
 Real-Time Index via ActiveRecord:
 
 ```php
+class Product extends CActiveRecord
+{
+
+    public function tableName()
+    {
+        return 'product';
+    }
+
+    public function afterSave() 
+    {
+        ProductIndex::model()->updateIndex($this);
+    }
+
+    public function afterDelete() 
+    {
+        ProductIndex::model()->deleteIndex($this);
+    }
+
+}
+
+
 class ProductIndex extends ESphinxActiveRecord
 {
 
@@ -126,26 +147,6 @@ class ProductIndex extends ESphinxActiveRecord
         $productIndex->quantity = $product->quantity;
         $productIndex->status = $product->status;
         $productIndex->save(false);
-    }
-
-}
-
-class Product extends CActiveRecord
-{
-
-    public function tableName()
-    {
-        return 'product';
-    }
-
-    public function afterSave() 
-    {
-        ProductIndex::model()->updateIndex($this);
-    }
-
-    public function afterDelete() 
-    {
-        ProductIndex::model()->deleteIndex($this);
     }
 
 }
