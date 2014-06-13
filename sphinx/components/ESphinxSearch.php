@@ -144,8 +144,6 @@ class ESphinxSearch extends CApplicationComponent
     public function init()
     {
         parent::init();
-        include_once(dirname(__FILE__) . '/models/ESphinxSearchResult.php');
-
         $this->client = new SphinxClient;
         $this->client->setServer($this->server, $this->port);
         $this->client->setMaxQueryTime($this->maxQueryTime);
