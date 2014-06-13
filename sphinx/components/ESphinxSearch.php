@@ -298,10 +298,8 @@ class ESphinxSearch extends CApplicationComponent
      */
     public function limit($offset = null, $limit = null)
     {
-        $this->criteria->limit = array(
-            'offset' => $offset,
-            'limit' => $limit
-        );
+        $this->criteria->paginator->offset = $offset;
+        $this->criteria->paginator->limit = $limit;
         if (isset($offset) && isset($limit)) {
             $this->client->setLimits($offset, $limit);
         }
