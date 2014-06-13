@@ -109,17 +109,17 @@ class ProductIndex extends ESphinxActiveRecord
 
     public function truncateIndex()
     {
-        $this->dbConnection->createCommand('TRUNCATE RTINDEX ' . OcProductIndex::model()->tableName())->execute();
+        $this->dbConnection->createCommand('TRUNCATE RTINDEX ' . ProductIndex::model()->tableName())->execute();
     }
 
     public function deleteIndex($product)
     {
-        $this->dbConnection->createCommand("DELETE FROM " . OcProductIndex::model()->tableName() . " WHERE id = " . $product->id)->execute();
+        $this->dbConnection->createCommand("DELETE FROM " . ProductIndex::model()->tableName() . " WHERE id = " . $product->id)->execute();
     }
 
     public function updateIndex($product)
     {
-        $productIndex = new OcProductIndex();
+        $productIndex = new ProductIndex();
         $productIndex->id = $product->id;
         $productIndex->name = $product->name;
         $productIndex->description = $product->description;
