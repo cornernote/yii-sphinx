@@ -6,7 +6,7 @@ Yii extension for Sphinx Search
 forked from http://www.yiiframework.com/extension/dgsphinxsearch/
 
 
-```
+```php
 return array(
     'aliases' => array(
         'sphinx' => realpath(VENDOR_PATH . '/cornernote/yii-sphinx/sphinx'),
@@ -16,9 +16,9 @@ return array(
             'class' => 'sphinx.components.ESphinxSearch',
             'server' => '127.0.0.1',
             'port' => 9312,
-            'maxQueryTime' => 3000,
-            'enableProfiling'=>0,
-            'enableResultTrace'=>0,
+            'maxQueryTime' => 3600,
+            'enableProfiling' => YII_DEBUG,
+            'enableResultTrace' => YII_DEBUG,
         ),
        'dbSphinx' => array(
             'class' => 'sphinx.components.ESphinxDbConnection',
@@ -31,4 +31,122 @@ return array(
         ),
      ),
 );
+```
+
+
+Search by criteria Object:
+
+```php
+// create the criteria
+$searchCriteria = new ESphinxCriteria();
+$searchCriteria->select = 'id';
+$searchCriteria->filters = array('status' => 1);
+$searchCriteria->query = 'keywords';
+$searchCriteria->from = 'product';
+$searchCriteria->groupby = 'price';
+$searchCriteria->orders = array('name' => 'ASC');
+$searchCriteria->paginator->pageSize = 1000;
+$searchCriteria->fieldWeights = array(
+    'name' => 20,
+    'description' => 1,
+);
+
+// get the result
+$resIterator = Yii::app()->sphinx->search($searchCriteria); // interator result
+// or
+$resArray = Yii::app()->sphinx->searchRaw($searchCriteria); // array result
+```
+
+
+Search by SQL-like syntax:
+
+```php
+$search->select('*')->
+    from($indexName)->
+    where($expression)->
+    filters(array('project_id' => $this->_city->id))->
+    groupby($groupby)->
+    orderby(array('f_name' => 'ASC'))->
+    limit(0, 30);
+$resIterator = $search->search(); // interator result
+/* OR */
+$resArray = $search->searchRaw(); // array result
+```
+
+
+Search by SphinxClient syntax:
+
+```php
+$search = Yii::App()->search;
+$search->setSelect('*');
+$search->setArrayResult(false);
+$search->setMatchMode(SPH_MATCH_EXTENDED);
+$search->setFieldWeights($fieldWeights)
+$resArray = $search->query( $query, $indexName);
+```
+
+
+Combined Method:
+
+```php
+$search = Yii::App()->search->
+    setArrayResult(false)->
+    setMatchMode(SPH_MATCH_EXTENDED);
+$resIterator = $search->select('field_1, field_2')->search($searchCriteria);
+```
+
+
+Real-Time Index via ActiveRecord:
+
+```php
+class ProductIndex extends ESphinxActiveRecord
+{
+
+    public function tableName()
+    {
+        return 'product';
+    }
+
+    public function truncateIndex()
+    {
+        $this->dbConnection->createCommand('TRUNCATE RTINDEX ' . OcProductIndex::model()->tableName())->execute();
+    }
+
+    public function deleteIndex($product)
+    {
+        $this->dbConnection->createCommand("DELETE FROM " . OcProductIndex::model()->tableName() . " WHERE id = " . $product->id)->execute();
+    }
+
+    public function updateIndex($product)
+    {
+        $productIndex = new OcProductIndex();
+        $productIndex->id = $product->id;
+        $productIndex->name = $product->name;
+        $productIndex->description = $product->description;
+        $productIndex->quantity = $product->quantity;
+        $productIndex->status = $product->status;
+        $productIndex->save(false);
+    }
+
+}
+
+class Product extends CActiveRecord
+{
+
+    public function tableName()
+    {
+        return 'product';
+    }
+
+    public function afterSave() 
+    {
+        ProductIndex::model()->updateIndex($this);
+    }
+
+    public function afterDelete() 
+    {
+        ProductIndex::model()->deleteIndex($this);
+    }
+
+}
 ```
