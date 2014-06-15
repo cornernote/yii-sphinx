@@ -21,7 +21,6 @@ class ESphinxSchema extends CMysqlSchema
      */
     protected function createCommandBuilder()
     {
-        Yii::import('sphinx.components.ESphinxCommandBuilder');
         return new ESphinxCommandBuilder($this);
     }
 
