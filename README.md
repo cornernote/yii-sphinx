@@ -121,11 +121,13 @@ class Product extends CActiveRecord
     public function afterSave() 
     {
         ProductIndex::model()->updateIndex($this);
+        parent::afterSave();
     }
 
     public function afterDelete() 
     {
         ProductIndex::model()->deleteIndex($this);
+        parent::afterDelete();
     }
 
 }
