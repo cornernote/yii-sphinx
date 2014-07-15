@@ -638,8 +638,8 @@ class SphinxClient
 			$left = $len;
 			while ( $left>0 && !feof($fp) )
 			{
-                $left = 8192; // http://sphinxsearch.com/forum/view.html?id=5916
-				$chunk = fread ( $fp, $left );
+                $chunk = fread ( $fp, 8192 ); // http://sphinxsearch.com/forum/view.html?id=5916
+				//$chunk = fread ( $fp, $left );
 				if ( $chunk )
 				{
 					$response .= $chunk;
